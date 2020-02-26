@@ -1,14 +1,19 @@
 import React from 'react'
+import {UserType} from "../../types/types";
+import {InjectedFormProps, Field} from "redux-form";
 
-const Form = () => {
+const Form :  React.FC<UserType & InjectedFormProps<{}, UserType> >= (props: any) => {
+    const { handleSubmit } = props;
+
     return <div>
-        <form>
-            <p><input type="text"/></p>
-            <p><input type="text"/></p>
-            <p><input type="text"/></p>
-            <p><input type="text"/></p>
-            <p><input type="text"/></p>
-            <p><button></button></p>
+        <form onSubmit={handleSubmit}>
+            <Field
+                name="userAddress"
+                type="textarea"
+                // component={"input"}
+                label="Address *"
+                placeHolder="Enter Address"
+            />
         </form>
     </div>
 }
