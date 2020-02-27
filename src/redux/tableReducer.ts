@@ -5,20 +5,27 @@ import {getUsers} from "../API/usersAPI";
 
 // CONSTANTS
 const GET_USERS = 'GET_USERS'
+const SORT_BY = 'SORT_BY'
 
 // ACTION TYPES
-type getUserSuccessActionType = {
+type GetUserSuccessActionType = {
     type: typeof GET_USERS
     users: Array<UserType>
 }
-type AllActionTypes = getUserSuccessActionType
+type SortByActionType = {
+    type: typeof SORT_BY
+    field: string
+}
+type AllActionTypes = GetUserSuccessActionType
+    | SortByActionType
 
 // ACTION CREATOR
-const getUserSuccess = (users: Array<UserType>): getUserSuccessActionType => ({type: GET_USERS, users});
+const getUserSuccess = (users: Array<UserType>): GetUserSuccessActionType => ({type: GET_USERS, users});
+export const sortBy = (field: string): SortByActionType => ({type: SORT_BY, field})
 
 // THUNK CREATOR
 export const getUsersThunk = () => (dispatch: Dispatch<any>, getState: (state: AppState) => void) => {
-    getUsers().then(data => {
+    getUsers().then((data: Array<UserType>) => {
         dispatch(getUserSuccess(data))
     })
 }
@@ -39,7 +46,6 @@ export const tableReducer = (state = initialState, action: AllActionTypes): Init
             return {
                 ...state,
                 users: [...action.users]
-
             }
         default:
             return state

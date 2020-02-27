@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {UsersType, UserType} from "./types/types";
 import  {reduxForm} from "redux-form";
 import Form from './component/Form/Form'
-import {getUsersThunk} from "./redux/tableReducer";
+import {getUsersThunk, sortBy} from "./redux/tableReducer";
 
 type PropsType = {
     table: UsersType
@@ -46,4 +46,4 @@ let mapStateToProps = (state: AppState): MapStateToPropsType => {
 // })(Form);
 
 
-export default connect(mapStateToProps, {getUsersThunk})(App);
+export default connect(mapStateToProps, {getUsersThunk, sortBy})(App);
