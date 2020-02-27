@@ -6,14 +6,13 @@ import  {reduxForm} from "redux-form";
 interface Props { };
 const Form :  React.FC<Props & InjectedFormProps<{}, Props> >= (props: any) => {
     const { handleSubmit } = props;
-
     return <div>
         <form onSubmit={handleSubmit}>
             <Field
                 name="userAddress"
                 type="textarea"
-                // component={"input"}
-                label="Address *"
+                component={"input"}
+                label="Address*"
                 placeHolder="Enter Address"
             />
         </form>
@@ -23,7 +22,7 @@ const Form :  React.FC<Props & InjectedFormProps<{}, Props> >= (props: any) => {
 const FormRedux = reduxForm<{}, Props>({
     destroyOnUnmount: false,
     forceUnregisterOnUnmount: false,
-    form: 'user',
+    form: 'formData',
 })(Form);
 
 export default FormRedux

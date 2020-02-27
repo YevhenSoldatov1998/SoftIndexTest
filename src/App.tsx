@@ -30,20 +30,13 @@ const App: FC<PropsType> = ({table,getUsersThunk}) => {
 };
 
 type MapStateToPropsType = {
-    // form: UserType
     table: UsersType
 }
 let mapStateToProps = (state: AppState): MapStateToPropsType => {
     return {
-        // form: state.form,
         table: state.table
     }
 };
-// const FormRedux = reduxForm<{}, UserType>({
-//     destroyOnUnmount: false,
-//     forceUnregisterOnUnmount: false,
-//     form: 'formData',
-// })(Form);
 
 
 export default connect(mapStateToProps, {getUsersThunk, sortBy})(App);
