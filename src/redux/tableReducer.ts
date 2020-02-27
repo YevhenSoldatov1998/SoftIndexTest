@@ -20,7 +20,7 @@ type AllActionTypes = GetUserSuccessActionType
     | SortByActionType
 
 // ACTION CREATOR
-const getUserSuccess = (users: Array<UserType>): GetUserSuccessActionType => ({type: GET_USERS, users});
+const getUserSuccess = (users: Array<UserType>): GetUserSuccessActionType => ({type: GET_USERS, users})
 export const sortBy = (field: string): SortByActionType => ({type: SORT_BY, field})
 
 // THUNK CREATOR

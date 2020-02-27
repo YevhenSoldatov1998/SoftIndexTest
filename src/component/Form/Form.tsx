@@ -1,8 +1,10 @@
 import React from 'react'
 import {UserType} from "../../types/types";
 import {InjectedFormProps, Field} from "redux-form";
+import  {reduxForm} from "redux-form";
 
-const Form :  React.FC<UserType & InjectedFormProps<{}, UserType> >= (props: any) => {
+interface Props { };
+const Form :  React.FC<Props & InjectedFormProps<{}, Props> >= (props: any) => {
     const { handleSubmit } = props;
 
     return <div>
@@ -17,4 +19,11 @@ const Form :  React.FC<UserType & InjectedFormProps<{}, UserType> >= (props: any
         </form>
     </div>
 }
-export default Form
+
+const FormRedux = reduxForm<{}, Props>({
+    destroyOnUnmount: false,
+    forceUnregisterOnUnmount: false,
+    form: 'user',
+})(Form);
+
+export default FormRedux

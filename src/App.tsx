@@ -7,10 +7,11 @@ import {UsersType, UserType} from "./types/types";
 import  {reduxForm} from "redux-form";
 import Form from './component/Form/Form'
 import {getUsersThunk, sortBy} from "./redux/tableReducer";
+import FormRedux from "./component/Form/Form";
 
 type PropsType = {
     table: UsersType
-    getUsersThunk: ()=> void
+    getUsersThunk: () => void
 }
 const App: FC<PropsType> = ({table,getUsersThunk}) => {
     const handleSubmit = (value: any) => {
@@ -21,7 +22,7 @@ const App: FC<PropsType> = ({table,getUsersThunk}) => {
     },[])
     return (
         <div className="App">
-            {/*<FormRedux onSubmit={handleSubmit} />*/}
+            <FormRedux onSubmit={handleSubmit} />
             <Table users={table.users}/>
 
         </div>
@@ -40,7 +41,6 @@ let mapStateToProps = (state: AppState): MapStateToPropsType => {
 };
 // const FormRedux = reduxForm<{}, UserType>({
 //     destroyOnUnmount: false,
-//
 //     forceUnregisterOnUnmount: false,
 //     form: 'formData',
 // })(Form);
