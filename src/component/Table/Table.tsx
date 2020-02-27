@@ -3,11 +3,14 @@ import {UserType} from '../../types/types'
 
 type PropsType = {
     users: Array<UserType>
+    sortBy: (field: string) => void
+    descOrAsc: () => void
 }
-const Table: FC<PropsType> = ({users}) => {
+const Table: FC<PropsType> = ({users, sortBy, descOrAsc}) => {
     const handleSort = (e: any) => {
-        debugger
-        let current = e.target.id
+        let field = e.target.id;
+        sortBy(field)
+        descOrAsc()
     }
     return (
         <table>
