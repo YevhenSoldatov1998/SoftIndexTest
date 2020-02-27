@@ -1,49 +1,44 @@
-import React, {useEffect, useState, FC} from 'react';
+import React, {useEffect, useState, FC, Props} from 'react';
 import './App.css';
 import {AppState} from "./redux/store";
 import Table from './component/Table/Table';
 import {connect} from "react-redux";
-import {UsersType, UserType} from "./types/types";
-import  {reduxForm} from "redux-form";
-import Form from './component/Form/Form'
-import {getUsersThunk, sortBy} from "./redux/tableReducer";
+import {UserType} from "./types/types";
+import {descOrAsc, getUsersThunk, sortBy} from "./redux/tableReducer";
 import FormRedux from "./component/Form/Form";
 
 type PropsType = {
-    table: UsersType
+    users: Array<UserType>
     getUsersThunk: () => void
+    sortBy: (field: string) => void
+    descOrAsc: () => void
 }
-const App: FC<PropsType> = ({table,getUsersThunk}) => {
+
+const App: FC<PropsType> = ({users, getUsersThunk, sortBy, descOrAsc}) => {
+    debugger
     const handleSubmit = (value: any) => {
         debugger
     };
-    useEffect(()=> {
+    useEffect(() => {
         getUsersThunk()
-    },[])
+    }, [])
     return (
         <div className="App">
-            <FormRedux onSubmit={handleSubmit} />
-            <Table users={table.users}/>
-
+            <FormRedux onSubmit={handleSubmit}/>
+            <Table sortBy={sortBy}
+                   descOrAsc={descOrAsc}
+                   users={users}/>
         </div>
     );
 };
 
 type MapStateToPropsType = {
-    // form: UserType
-    table: UsersType
+    users: Array<UserType>
 }
 let mapStateToProps = (state: AppState): MapStateToPropsType => {
     return {
-        // form: state.form,
-        table: state.table
+        users: state.table.users
     }
-};
-// const FormRedux = reduxForm<{}, UserType>({
-//     destroyOnUnmount: false,
-//     forceUnregisterOnUnmount: false,
-//     form: 'formData',
-// })(Form);
+}
+export default connect(mapStateToProps, {getUsersThunk, sortBy, descOrAsc})(App);
 
-
-export default connect(mapStateToProps, {getUsersThunk, sortBy})(App);
