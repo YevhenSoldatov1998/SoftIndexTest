@@ -1,16 +1,17 @@
 import {UserType} from "../types/types";
 import {Dispatch} from "redux";
 import {AppState} from "./store";
-import {getUsers} from "../API/usersAPI";
+import {deleteUser, getUsers, setUser} from "../API/usersAPI";
 import _ from 'lodash'
 
 // CONSTANTS
 const GET_USERS = 'GET_USERS';
 const SORT_BY = 'SORT_BY';
 const DESC_OR_ASC = 'DESC_OR_ASC';
+const IS_FETCHING = 'IS_FETCHING';
 
 // ACTION TYPES
-type GetUserSuccessActionType = {
+type GetUsersSuccessActionType = {
     type: typeof GET_USERS
     users: Array<UserType>
 }
@@ -18,40 +19,67 @@ type SortByActionType = {
     type: typeof SORT_BY
     field: string
 }
-type DescOrAsc = {
+type DescOrAscActionType = {
     type: typeof DESC_OR_ASC
 }
-type AllActionTypes = GetUserSuccessActionType
+type IsFetchingActionType = {
+    type: typeof IS_FETCHING
+    isFetching: boolean
+}
+
+type AllActionTypes = GetUsersSuccessActionType
     | SortByActionType
-    | DescOrAsc
+    | DescOrAscActionType
+    | IsFetchingActionType
 
 // ACTION CREATOR
-const getUserSuccess = (users: Array<UserType>): GetUserSuccessActionType => ({type: GET_USERS, users});
-export const descOrAsc = ():DescOrAsc => ({type: DESC_OR_ASC})
-export const sortBy = (field: string): SortByActionType => {
-    debugger
-    return {type: SORT_BY, field}
-};
+const getUserSuccess = (users: Array<UserType>): GetUsersSuccessActionType => ({type: GET_USERS, users});
+export const descOrAsc = (): DescOrAscActionType => ({type: DESC_OR_ASC});
+export const sortBy = (field: string): SortByActionType => ({type: SORT_BY, field});
+export const toggleIsFetching = (isFetching: boolean) => ({type: IS_FETCHING, isFetching});
 
 // THUNK CREATOR
-export const getUsersThunk = () => async (dispatch: Dispatch<AllActionTypes>, getState: (state: AppState) => void) => {
+export const getUsersThunk = () => async (dispatch: Dispatch<any>, getState: (state: AppState) => void) => {
     try {
+        dispatch(toggleIsFetching(true));
         let data: Array<UserType> = await getUsers();
         dispatch(getUserSuccess(data));
+        dispatch(toggleIsFetching(false));
     } catch (e) {
         alert('Cannot connect to server.\nTry running json-server\n')
     }
 };
+export const setUserThunk = (user: UserType) => async (dispatch: Dispatch<AllActionTypes & any>, getState: (state: AppState) => void) =>{
+    try{
+        let data = await setUser(user);
+        dispatch(getUsersThunk())
+    }
+    catch(e){
+        alert('some erorr: ' + e)
+    }
+}
+export const deleteUserThunk = (userId: number) => async (dispatch: Dispatch<AllActionTypes & any>, getState: (state: AppState) =>void)=>{
+    try{
+        let promise = await deleteUser(userId);
+        dispatch(getUsersThunk())
+    }
+    catch(e){
+        alert('sorry some error \n' + e)
+    }
+}
 
 // TYPE STATE
 type InitialStateType = {
     users: Array<UserType>
     order: boolean | "asc" | "desc"
+    isFetching: boolean
 }
+
 // INITIAL STATE
 const initialState: InitialStateType = {
     users: [],
-    order: 'asc'
+    order: 'asc',
+    isFetching: false
 };
 
 //REDUCER
@@ -75,6 +103,11 @@ export const tableReducer = (state = initialState, action: AllActionTypes): Init
             return {
                 ...state,
                 order: state.order === 'asc'? 'desc': 'asc'
+            }
+        case IS_FETCHING:
+            return{
+                ...state,
+                isFetching: action.isFetching
             }
         default:
             return state

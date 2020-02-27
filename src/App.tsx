@@ -1,23 +1,29 @@
-import React, {useEffect, useState, FC, Props} from 'react';
+import React, {useEffect, FC} from 'react';
 import './App.css';
 import {AppState} from "./redux/store";
 import Table from './component/Table/Table';
 import {connect} from "react-redux";
 import {UserType} from "./types/types";
-import {descOrAsc, getUsersThunk, sortBy} from "./redux/tableReducer";
+import {deleteUserThunk, descOrAsc, getUsersThunk, setUserThunk, sortBy} from "./redux/tableReducer";
 import FormRedux from "./component/Form/Form";
+import Preloader from "./component/Preloader/Preloader";
 
 type PropsType = {
     users: Array<UserType>
-    getUsersThunk: () => void
+    order: boolean | "asc" | "desc"
+    isFetching: boolean
     sortBy: (field: string) => void
     descOrAsc: () => void
+    getUsersThunk: () => void
+    setUserThunk: (user: UserType) => void
+    deleteUserThunk: (userId: number) => void
 }
 
-const App: FC<PropsType> = ({users, getUsersThunk, sortBy, descOrAsc}) => {
-    debugger
+const App: FC<PropsType> = (
+    {users, isFetching, getUsersThunk, sortBy, descOrAsc, order, setUserThunk, deleteUserThunk}
+) => {
     const handleSubmit = (value: any) => {
-        debugger
+        setUserThunk(value)
     };
     useEffect(() => {
         getUsersThunk()
@@ -27,18 +33,29 @@ const App: FC<PropsType> = ({users, getUsersThunk, sortBy, descOrAsc}) => {
             <FormRedux onSubmit={handleSubmit}/>
             <Table sortBy={sortBy}
                    descOrAsc={descOrAsc}
-                   users={users}/>
+                   users={users}
+                   order={order}
+                   deleteUserThunk={deleteUserThunk}
+                   isFetching = {isFetching}
+            />
+
         </div>
     );
 };
 
 type MapStateToPropsType = {
     users: Array<UserType>
+    order: boolean | "asc" | "desc"
+    isFetching: boolean
 }
 let mapStateToProps = (state: AppState): MapStateToPropsType => {
     return {
-        users: state.table.users
+        users: state.table.users,
+        order: state.table.order,
+        isFetching: state.table.isFetching
     }
 }
-export default connect(mapStateToProps, {getUsersThunk, sortBy, descOrAsc})(App);
+export default connect(mapStateToProps, {
+    getUsersThunk, setUserThunk, sortBy, descOrAsc, deleteUserThunk
+})(App);
 

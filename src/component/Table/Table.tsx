@@ -1,41 +1,52 @@
-import React, {ChangeEvent, FC} from 'react'
+import React, {ChangeEvent, FC, useState} from 'react'
 import {UserType} from '../../types/types'
+import TableBody from './TableBody/TableBody'
+import TableHead from "./TableHead/TableHead";
+import Preloader from "../Preloader/Preloader";
 
+const mainFields = [
+    {id: 'firstName', title: 'First Name'},
+    {id: 'lastName', title: 'Last Name'},
+    {id: 'phone', title: 'Phone'},
+    {id: 'gender', title: 'Gender'},
+    {id: 'age', title: 'Age'},
+]
 type PropsType = {
     users: Array<UserType>
+    isFetching: boolean
     sortBy: (field: string) => void
     descOrAsc: () => void
+    order: boolean | "asc" | "desc"
+    deleteUserThunk: (userId: number) => void
 }
-const Table: FC<PropsType> = ({users, sortBy, descOrAsc}) => {
-    const handleSort = (e: any) => {
-        let field = e.target.id;
-        sortBy(field)
-        descOrAsc()
+const Table: FC<PropsType> = ({users, isFetching, sortBy, descOrAsc, order, deleteUserThunk}) => {
+
+    const [sortByField, setSortByField] = useState(null);
+
+    const handleSort = (field: any) => {
+        sortBy(field);
+        descOrAsc();
+        setSortByField(field)
+    }
+    const handleDelete = (userId: number) => {
+        deleteUserThunk(userId)
     }
     return (
         <table>
             <caption>Users</caption>
             <thead>
-            <tr onClick={handleSort}>
-                <th id="firstName" scope="col">First Name</th>
-                <th id="lastName" scope="col">Last Name</th>
-                <th id="phone" scope="col">Phone</th>
-                <th id="gender" scope="col">Gender</th>
-                <th id="age" scope="col">Age</th>
-            </tr>
+            <TableHead order={order}
+                       sortByField={sortByField}
+                       handleSort={handleSort}/>
             </thead>
-            <tbody>
-            {users.map(user => {
-                return <tr key={user.id}>
-                    <td> {user.firstName}</td>
-                    <td>{user.lastName}</td>
-                    <td>{user.phone}</td>
-                    <td>{user.gender}</td>
-                    <td>{user.age}</td>
-                </tr>
-            })}
+            {isFetching ?
+                <Preloader/> :
+                <tbody>
+                <TableBody users={users} handleDelete={handleDelete}/>
+                </tbody>
+            }
 
-            </tbody>
+
         </table>
     )
 }
