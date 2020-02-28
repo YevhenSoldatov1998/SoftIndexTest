@@ -1,12 +1,12 @@
 import React, {useEffect, FC} from 'react';
 import './App.css';
+import 'normalize.css';
 import {AppState} from "./redux/store";
 import Table from './component/Table/Table';
 import {connect} from "react-redux";
 import {UserType} from "./types/types";
 import {deleteUserThunk, descOrAsc, getUsersThunk, setUserThunk, sortBy} from "./redux/tableReducer";
 import FormRedux from "./component/Form/Form";
-import Preloader from "./component/Preloader/Preloader";
 
 type PropsType = {
     users: Array<UserType>

@@ -1,0 +1,36 @@
+form
+  display: flex
+  flex-direction: column
+  width: 400px
+  margin: 0 auto
+
+.formControl
+  display: flex
+  flex-direction: column
+  margin: 10px 0
+  position: relative
+
+  input
+    box-sizing: border-box
+    height: 35px
+    border: 0
+    font-size: 14px
+    outline: 0
+    padding: 10px 20px
+    z-index: 1
+    position: relative
+    border-bottom: 1px solid rgba(#626262,.3)
+    width: 100%
+    background-color: rgba(#a3f7bf, .2)
+  .error
+    background-color: rgba(#f35588, .1)
+    border-bottom: 1px solid rgba(#f35588,.4)
+.textError
+  position: relative
+  bottom: 0
+  z-index: 11
+  color: #f35588
+  font-size: 13px
+  left: 0
+  margin-top: 10px
+  width: 100%

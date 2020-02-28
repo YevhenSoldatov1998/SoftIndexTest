@@ -46,7 +46,13 @@ export const getUsersThunk = () => async (dispatch: Dispatch<any>, getState: (st
         dispatch(getUserSuccess(data));
         dispatch(toggleIsFetching(false));
     } catch (e) {
-        alert('Cannot connect to server.\nTry running json-server\n')
+        alert('Cannot connect to server.\nTry running json-server.\nTake the following steps:\n' +
+            '1) Install JSON Server' +
+            '\n' +
+            'npm install -g json-server\n' +
+            '2) Start JSON Server in your terminal ' +
+            '\n' +
+            'json-server --watch src/server/db.json')
     }
 };
 export const setUserThunk = (user: UserType) => async (dispatch: Dispatch<AllActionTypes & any>, getState: (state: AppState) => void) =>{

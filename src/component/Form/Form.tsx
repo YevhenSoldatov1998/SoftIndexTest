@@ -1,29 +1,62 @@
 import React from 'react'
-import  {reduxForm, InjectedFormProps, Field} from "redux-form";
+import {reduxForm, InjectedFormProps, Field} from "redux-form";
+import {required} from '../../util/validation';
+import './Form.sass'
+import { Button } from '../StyledComponent/Button';
 
-interface Props { };
+interface PropsRenderField {
+    input: any,
+    type: any
+    meta: any,
+    placeholder: string
+};
 
-const Form :  React.FC<Props & InjectedFormProps<{}, Props> >= (props: any) => {
-    const { handleSubmit } = props;
+const renderField: React.FC<PropsRenderField> = (
+    {
+        meta: {touched, error, warning},
+        input,
+        ...props
 
+    }) => {
+    debugger
+    const hasError = error && touched
+    return (
+        <div>
+            <div className="formControl">
+                <input className={hasError ? 'error' : ''}  {...input} {...props}/>
+                    {touched &&
+                    ((error && <span className="textError">{error}</span>))}
+            </div>
+        </div>
+    )
+}
+
+interface Props {
+}
+
+const Form: React.FC<Props & InjectedFormProps<{}, Props>> = (props: any) => {
+    const {handleSubmit} = props;
     return <div>
         <form onSubmit={handleSubmit}>
             <Field
                 name="firstName"
                 type="input"
-                component={"input"}
+                component={renderField}
                 placeholder="First Name"
+                validate={[required]}
             />
             <Field
                 name="lastName"
                 type="input"
-                component={"input"}
                 placeholder="Last Name"
+                component={renderField}
+                validate={[required]}
             />
             <Field
                 name="phone"
                 type="string"
-                component={"input"}
+                component={renderField}
+                validate={[required]}
                 placeholder="Phone"
             />
 
@@ -36,10 +69,11 @@ const Form :  React.FC<Props & InjectedFormProps<{}, Props> >= (props: any) => {
             <Field
                 name="age"
                 type="number"
-                component={"input"}
+                component={renderField}
+                validate={[required]}
                 placeholder="Age"
             />
-            <button>Add user</button>
+            <Button>Add user</Button>
 
 
         </form>
