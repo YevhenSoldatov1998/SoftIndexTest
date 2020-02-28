@@ -3,6 +3,7 @@ import {Dispatch} from "redux";
 import {AppState} from "./store";
 import {deleteUser, getUsers, setUser} from "../API/usersAPI";
 import _ from 'lodash'
+import {reset} from "redux-form";
 
 // CONSTANTS
 const GET_USERS = 'GET_USERS';
@@ -55,21 +56,20 @@ export const getUsersThunk = () => async (dispatch: Dispatch<any>, getState: (st
             'json-server --watch src/server/db.json')
     }
 };
-export const setUserThunk = (user: UserType) => async (dispatch: Dispatch<AllActionTypes & any>, getState: (state: AppState) => void) =>{
-    try{
+export const setUserThunk = (user: UserType) => async (dispatch: Dispatch<AllActionTypes & any>, getState: (state: AppState) => void) => {
+    try {
         let data = await setUser(user);
         dispatch(getUsersThunk())
-    }
-    catch(e){
-        alert('some erorr: ' + e)
+        dispatch(reset('formData'));
+    } catch (e) {
+        alert('some error: ' + e)
     }
 }
-export const deleteUserThunk = (userId: number) => async (dispatch: Dispatch<AllActionTypes & any>, getState: (state: AppState) =>void)=>{
-    try{
+export const deleteUserThunk = (userId: number) => async (dispatch: Dispatch<AllActionTypes & any>, getState: (state: AppState) => void) => {
+    try {
         let promise = await deleteUser(userId);
         dispatch(getUsersThunk())
-    }
-    catch(e){
+    } catch (e) {
         alert('sorry some error \n' + e)
     }
 }
@@ -79,13 +79,21 @@ type InitialStateType = {
     users: Array<UserType>
     order: boolean | "asc" | "desc"
     isFetching: boolean
+    mainFields: Array<{id: string, title: string}>
 }
 
 // INITIAL STATE
 const initialState: InitialStateType = {
     users: [],
     order: 'asc',
-    isFetching: false
+    isFetching: false,
+    mainFields:[
+        {id: 'firstName', title: 'First Name'},
+        {id: 'lastName', title: 'Last Name'},
+        {id: 'phone', title: 'Phone'},
+        {id: 'gender', title: 'Gender'},
+        {id: 'age', title: 'Age'},
+    ]
 };
 
 //REDUCER
@@ -108,10 +116,10 @@ export const tableReducer = (state = initialState, action: AllActionTypes): Init
         case DESC_OR_ASC:
             return {
                 ...state,
-                order: state.order === 'asc'? 'desc': 'asc'
+                order: state.order === 'asc' ? 'desc' : 'asc'
             }
         case IS_FETCHING:
-            return{
+            return {
                 ...state,
                 isFetching: action.isFetching
             }

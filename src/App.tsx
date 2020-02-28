@@ -12,6 +12,7 @@ type PropsType = {
     users: Array<UserType>
     order: boolean | "asc" | "desc"
     isFetching: boolean
+    mainFields: Array<{id: string, title: string}>
     sortBy: (field: string) => void
     descOrAsc: () => void
     getUsersThunk: () => void
@@ -20,7 +21,7 @@ type PropsType = {
 }
 
 const App: FC<PropsType> = (
-    {users, isFetching, getUsersThunk, sortBy, descOrAsc, order, setUserThunk, deleteUserThunk}
+    {users, isFetching, getUsersThunk, sortBy, descOrAsc, order, setUserThunk, deleteUserThunk, mainFields}
 ) => {
     const handleSubmit = (value: any) => {
         setUserThunk(value)
@@ -33,6 +34,7 @@ const App: FC<PropsType> = (
             <FormRedux onSubmit={handleSubmit}/>
             <Table sortBy={sortBy}
                    descOrAsc={descOrAsc}
+                   mainFields={mainFields}
                    users={users}
                    order={order}
                    deleteUserThunk={deleteUserThunk}
@@ -47,12 +49,14 @@ type MapStateToPropsType = {
     users: Array<UserType>
     order: boolean | "asc" | "desc"
     isFetching: boolean
+    mainFields: Array<{id: string, title: string}>
 }
 let mapStateToProps = (state: AppState): MapStateToPropsType => {
     return {
         users: state.table.users,
         order: state.table.order,
-        isFetching: state.table.isFetching
+        isFetching: state.table.isFetching,
+        mainFields: state.table.mainFields
     }
 }
 export default connect(mapStateToProps, {

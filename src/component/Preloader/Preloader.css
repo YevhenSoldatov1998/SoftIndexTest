@@ -1,0 +1,19 @@
+.wrapperLoader{
+    display: flex;
+    justify-content: center;
+}
+.loader {
+    border: 16px solid rgba(163, 247, 191, 0.2); /* Light grey */
+    border-top: 16px solid #0f4c81; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    position: relative;
+    animation: spin .6s linear infinite;
+
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg) scale(.6); }
+    100% { transform: rotate(360deg)  scale(.6);  }
+}

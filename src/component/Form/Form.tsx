@@ -1,8 +1,8 @@
 import React from 'react'
 import {reduxForm, InjectedFormProps, Field} from "redux-form";
-import {required} from '../../util/validation';
+import {minLength2, phoneNumber, required} from '../../util/validation';
 import './Form.sass'
-import { Button } from '../StyledComponent/Button';
+import {Button} from '../StyledComponent/Button';
 
 interface PropsRenderField {
     input: any,
@@ -18,14 +18,13 @@ const renderField: React.FC<PropsRenderField> = (
         ...props
 
     }) => {
-    debugger
     const hasError = error && touched
     return (
         <div>
             <div className="formControl">
                 <input className={hasError ? 'error' : ''}  {...input} {...props}/>
-                    {touched &&
-                    ((error && <span className="textError">{error}</span>))}
+                {touched &&
+                ((error && <span className="textError">{error}</span>))}
             </div>
         </div>
     )
@@ -36,6 +35,7 @@ interface Props {
 
 const Form: React.FC<Props & InjectedFormProps<{}, Props>> = (props: any) => {
     const {handleSubmit} = props;
+
     return <div>
         <form onSubmit={handleSubmit}>
             <Field
@@ -43,29 +43,27 @@ const Form: React.FC<Props & InjectedFormProps<{}, Props>> = (props: any) => {
                 type="input"
                 component={renderField}
                 placeholder="First Name"
-                validate={[required]}
+                validate={[required, minLength2]}
             />
             <Field
                 name="lastName"
                 type="input"
                 placeholder="Last Name"
                 component={renderField}
-                validate={[required]}
+                validate={[required, minLength2]}
             />
             <Field
                 name="phone"
                 type="string"
                 component={renderField}
-                validate={[required]}
+                validate={[required, phoneNumber]}
                 placeholder="Phone"
             />
 
-            <Field
-                name="gender"
-                type="checkbox"
-                component={"input"}
-                placeholder="Gander"
-            />
+            <div className="radioField">
+                <label><Field name="gender" component={"input"} type="radio"/> Male</label>
+                <label><Field name="gender" component={"input"} type="radio" value={"Female"}/> Female</label>
+            </div>
             <Field
                 name="age"
                 type="number"

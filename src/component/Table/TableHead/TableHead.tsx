@@ -1,18 +1,12 @@
 import React, {FC} from 'react'
 
-const mainFields = [
-    {id: 'firstName', title: 'First Name'},
-    {id: 'lastName', title: 'Last Name'},
-    {id: 'phone', title: 'Phone'},
-    {id: 'gender', title: 'Gender'},
-    {id: 'age', title: 'Age'},
-]
 type PropsType = {
     order: boolean | "asc" | "desc"
+    mainFields: Array<{id: string, title: string}>
     sortByField: string | null
     handleSort: (field: string) => void
 }
-const TableHead: FC<PropsType> = ({ order, sortByField, handleSort}) => {
+const TableHead: FC<PropsType> = ({ order, sortByField, handleSort, mainFields}) => {
 
     const callHandleSort = (field: string) => {
         handleSort(field)

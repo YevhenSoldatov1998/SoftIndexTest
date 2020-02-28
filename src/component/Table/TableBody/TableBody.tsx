@@ -16,9 +16,11 @@ const TableBody: FC<PropsType> = ({users , handleDelete}) => {
                     <td>{user.firstName}</td>
                     <td>{user.lastName}</td>
                     <td>{user.phone}</td>
-                    <td>{user.gender ? 'Man' : 'Woman'}</td>
+                    <td>{user.gender ? 'Female' : 'Male'}</td>
                     <td>{user.age}</td>
-                    <td onClick={() => callHandleDelete(user.id)}>&times;</td>
+                    <td className="deleteField"
+                        onClick={() => callHandleDelete(user.id)}
+                    ><img width="14px" src="https://image.flaticon.com/icons/svg/1214/1214428.svg" alt=""/></td>
                 </tr>
             })}
           </>

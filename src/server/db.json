@@ -1,25 +1,19 @@
 {
   "users": [
     {
-      "firstName": "dsf",
-      "lastName": "dsfdf",
-      "phone": "dsf",
-      "id": 7
-    },
-    {
-      "firstName": "Yevhen",
-      "lastName": "Солдатов",
-      "phone": "1",
-      "gender": false,
+      "firstName": "Anastasia",
+      "lastName": "Kovtun",
+      "phone": "38033234",
+      "gender": true,
       "age": "21",
-      "id": 10
+      "id": 20
     },
     {
-      "lastName": "saf",
-      "phone": "sdf",
-      "age": "2",
-      "firstName": "1",
-      "id": 11
+      "firstName": "Dmitry",
+      "lastName": "Soldatov",
+      "phone": "342342342",
+      "age": "13",
+      "id": 21
     }
   ]
 }

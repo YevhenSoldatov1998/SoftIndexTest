@@ -3,23 +3,19 @@ import {UserType} from '../../types/types'
 import TableBody from './TableBody/TableBody'
 import TableHead from "./TableHead/TableHead";
 import Preloader from "../Preloader/Preloader";
+import './Table.sass'
 
-const mainFields = [
-    {id: 'firstName', title: 'First Name'},
-    {id: 'lastName', title: 'Last Name'},
-    {id: 'phone', title: 'Phone'},
-    {id: 'gender', title: 'Gender'},
-    {id: 'age', title: 'Age'},
-]
+
 type PropsType = {
     users: Array<UserType>
     isFetching: boolean
+    mainFields: Array<{id: string, title: string}>
     sortBy: (field: string) => void
     descOrAsc: () => void
     order: boolean | "asc" | "desc"
     deleteUserThunk: (userId: number) => void
 }
-const Table: FC<PropsType> = ({users, isFetching, sortBy, descOrAsc, order, deleteUserThunk}) => {
+const Table: FC<PropsType> = ({users, isFetching, sortBy, descOrAsc, order, deleteUserThunk, mainFields}) => {
 
     const [sortByField, setSortByField] = useState(null);
 
@@ -33,10 +29,10 @@ const Table: FC<PropsType> = ({users, isFetching, sortBy, descOrAsc, order, dele
     }
     return (
         <table>
-            <caption>Users</caption>
             <thead>
             <TableHead order={order}
                        sortByField={sortByField}
+                       mainFields={mainFields}
                        handleSort={handleSort}/>
             </thead>
             {isFetching ?
